@@ -17,6 +17,9 @@ const winPaterns = [
     [6,7,8]
 ];
 
+let idx =0;
+let isWinner = false;
+
 boxes.forEach((box) => {
     box.addEventListener("click" ,() =>{
         if(turnO){
@@ -28,7 +31,9 @@ boxes.forEach((box) => {
             turnO = true;
         }
         box.disabled = true;
+        idx++;
         checkWinner();
+        draw(); 
     })
 })
 
@@ -41,15 +46,26 @@ const checkWinner = () =>{
         if(pos1Val != "" && pos2Val != "" && pos3Val != ""){
             if(pos1Val == pos2Val && pos2Val == pos3Val){
                 showWinner(pos1Val);
+                isWinner = true;
             }
         }
+        
     }
 }
 
+const draw = () =>{
+    if(idx >= 9 && !isWinner){
+        msg.innerText = 'Match is draw';
+        msgContainer.classList.remove("hide");
+        disableBoxes();
+        idx = 0;
+    }
+}
 const showWinner = (winner) =>{
     msg.innerText = `Congratulations! Winner is ${winner}`;
     msgContainer.classList.remove("hide");
     disableBoxes();
+    idx = 0;
 }
 
 const disableBoxes = () =>{
@@ -63,6 +79,7 @@ const enableBoxes = () =>{
         box.disabled = false;
         box.innerText="";
     }
+    idx = 0;
 }
 
 const resetGame = () =>{
